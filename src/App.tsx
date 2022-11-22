@@ -1,9 +1,9 @@
 import React from 'react'
 import logo from './logo.svg'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
-import Buyflow, { ProductIds } from './containers/buyflow/Buyflow'
+import Buyflow from './containers/buyflow/Buyflow'
 import './App.css'
-
+import { ProductIds } from 'src/containers/GenericFlow/index.constants'
 
 const App = () => {
   return (

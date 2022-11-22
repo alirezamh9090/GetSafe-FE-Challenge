@@ -1,11 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { StepDataType } from 'src/containers/GenericFlow'
 
 interface SummaryStepProps {
-  collectedData: {
-    email: string
-    age: number
-  }
+  collectedData: StepDataType
 }
 
 const SummaryStep: React.FC<SummaryStepProps> = (props) => {
