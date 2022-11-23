@@ -13,6 +13,7 @@ const EmailStep: React.FC<EmailStepProps> = (props) => {
 
   return (
     <SimpleForm
+      required
       type="email"
       name="email"
       id="email"

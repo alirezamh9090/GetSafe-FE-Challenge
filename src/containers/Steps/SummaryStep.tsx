@@ -4,15 +4,21 @@ import { StepDataType } from 'src/containers/GenericFlow'
 
 interface SummaryStepProps {
   collectedData: StepDataType
+  purchaseLink: string
+}
+
+const capitalizeFirstLetter = (str: string) => {
+  return str.charAt(0).toUpperCase() + str.slice(1)
 }
 
 const SummaryStep: React.FC<SummaryStepProps> = (props) => {
   return (
     <>
-      <div>Email: {props.collectedData.email}</div>
-      <div>Age: {props.collectedData.age}</div>
+      {Object.entries(props.collectedData).map(([key, data]) => (
+        <div key={key}>{`${capitalizeFirstLetter(key)}: ${data}`}</div>
+      ))}
       <div>
-        <Link to="/purchased=dev_ins">Purchase</Link>
+        <Link to={props.purchaseLink}>Purchase</Link>
       </div>
     </>
   )

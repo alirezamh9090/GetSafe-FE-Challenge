@@ -8,7 +8,7 @@ interface AgeStepProps {
 const AgeStep: React.FC<AgeStepProps> = (props) => {
   const handleSubmission = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    props.cb('age', e.currentTarget.age.value)
+    props.cb('age', Number(e.currentTarget.age.value))
   }
 
   return (

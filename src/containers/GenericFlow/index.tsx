@@ -3,9 +3,10 @@ import AgeStep from 'src/containers/Steps/AgeStep'
 import EmailStep from 'src/containers/Steps/EmailStep'
 import SummaryStep from 'src/containers/Steps/SummaryStep'
 import {
-  PRODUCT_IDS_TO_NAMES,
+  PRODUCT_IDS_DETAILS,
   ProductIds,
 } from 'src/containers/GenericFlow/index.constants'
+import NameStep from 'src/containers/Steps/NameStep'
 
 interface GenericProps {
   productId: ProductIds
@@ -26,14 +27,25 @@ export type StepDataType = Omit<
 >
 
 const GenericFlow: React.FC<GenericProps> = (props) => {
+  const { stepsDetail, productId, title } = props
+  const initialData = stepsDetail.reduce((acc, stepsDetail) => {
+    return { ...acc, ...stepsDetail.initialData }
+  }, {})
   const [currentStep, setStep] = useState<STEPS>(props.stepsDetail[0].step)
-  const [collectedData, updateData] = useState<StepDataType>({
-    email: '',
-    age: 0,
-    fullname: '',
-  })
+  const [collectedData, updateData] = useState<StepDataType>(initialData)
   const getStepCallback = (field: string, value: any) => {
-    updateData({ ...collectedData, [field]: value })
+    if (typeof value !== 'string' && typeof value !== 'number') {
+      const formattedValue = value.reduce(
+        (acc: Record<string, string>, val: Record<string, string>) => ({
+          ...acc,
+          [val.label]: val.value,
+        }),
+        {}
+      )
+      updateData({ ...collectedData, ...formattedValue })
+    } else {
+      updateData({ ...collectedData, [field]: value })
+    }
     const nextStepIndex =
       props.stepsDetail.findIndex(
         (stepsDetail) => stepsDetail.step === currentStep
@@ -44,13 +56,15 @@ const GenericFlow: React.FC<GenericProps> = (props) => {
 
   return (
     <>
-      <h4>
-        {`Buying ${PRODUCT_IDS_TO_NAMES[props.productId]}` || props.title}
-      </h4>
+      <h4>{`Buying ${PRODUCT_IDS_DETAILS[productId].title}` || title}</h4>
       {currentStep === STEPS.EMAIL && <EmailStep cb={getStepCallback} />}
       {currentStep === STEPS.AGE && <AgeStep cb={getStepCallback} />}
+      {currentStep === STEPS.FULLNAME && <NameStep cb={getStepCallback} />}
       {currentStep === STEPS.SUMMARY && (
-        <SummaryStep collectedData={collectedData} />
+        <SummaryStep
+          collectedData={collectedData}
+          purchaseLink={PRODUCT_IDS_DETAILS[productId].purchaseLink}
+        />
       )}
     </>
   )

@@ -1,5 +1,7 @@
+import React from 'react'
+
 interface ISimpleFormProps
-  extends Omit<React.HTMLAttributes<HTMLInputElement>, 'onSubmit'> {
+  extends Omit<React.HTMLProps<HTMLInputElement>, 'onSubmit'> {
   id: string
   name: string
   label?: string
@@ -18,7 +20,6 @@ const SimpleForm: React.FC<ISimpleFormProps> = (props) => {
     className,
     inputClassName,
     onSubmit,
-    type = 'text',
     buttonText = 'Next',
     ...rest
   } = props
@@ -29,7 +30,6 @@ const SimpleForm: React.FC<ISimpleFormProps> = (props) => {
         className={inputClassName}
         name={name || id}
         id={id || name}
-        type={type}
         {...rest}
       />
       <button type="submit">{buttonText}</button>
